@@ -10,24 +10,20 @@ import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAgdtfoY06kNC78khTFpvRzyFTW3nzJxO4",
-  authDomain: "arch-39e60.firebaseapp.com",
-  projectId: "arch-39e60",
-  storageBucket: "arch-39e60.appspot.com",
-  messagingSenderId: "36281085157",
-  appId: "1:36281085157:web:380cd51b6a5525a98b380c"
+  apiKey: "AIzaSyANxmdaEGWhe3gr82dAgSv_kNxu6jIhdv8",
+  authDomain: "leguide-ac57c.firebaseapp.com",
+  projectId: "leguide-ac57c",
+  storageBucket: "leguide-ac57c.appspot.com",
+  messagingSenderId: "459996970416",
+  appId: "1:459996970416:web:276cf7e16b1ea722f12a75"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
-const msg = "Bienvenue sur l'ach";
 const feedback = [];
-const university = 'ufhb';
-const filiere = "Math Info";
-const level = 'Inconnu';
-const sexe = 'Inconnu';
+
 
 // Sign with Google
 const signInWithGoogle = async () => {
@@ -42,15 +38,10 @@ const signInWithGoogle = async () => {
         name: user.displayName,
         authProvider: "google",
         email: user.email,
-        message: msg,
         feedback: feedback,
         creationTime: user.metadata.creationTime,
         lastSeenTime: user.metadata.lastSignInTime,
         userPhoto: user.photoURL,
-        university: university,
-        filiere: filiere,
-        level: level,
-        sexe: sexe,
       });
     }
     console.log("sign sucess");
