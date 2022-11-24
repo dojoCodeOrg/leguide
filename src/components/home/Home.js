@@ -3,6 +3,8 @@ import { auth,db } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import "./home.css"
+import "../assets/style.css"
+
 
 import Header from "../header/Header";
 import Footer from "../footer/Footer";

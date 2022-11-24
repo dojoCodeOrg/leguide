@@ -1,0 +1,5 @@
+.sign {
+    display: grid;
+    align-items: center;
+    min-height: 90vh;
+}
