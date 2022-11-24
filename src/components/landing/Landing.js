@@ -8,6 +8,10 @@ function Home() {
     const [user, loading] = useAuthState(auth);
     const navigate = useNavigate();
 
+    function switchToSign() {
+        window.location = "/sign";
+    }
+
 
     useEffect(() => {
         if (loading) return;
@@ -17,7 +21,7 @@ function Home() {
     return (
         <>
             <section id="hero-baner">
-                
+                <Button onClick={switchToSign}></Button>
             </section>
         </>
     )
