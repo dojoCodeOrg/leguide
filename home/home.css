@@ -6,3 +6,32 @@
 	margin-bottom: 50px;
 	margin-top: 50px;
 }
+
+.bbtn {
+	display: grid;
+}
+
+.btn-svg {
+	width: 15%;
+}
+
+.btn-item {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	align-items: center;
+	align-content: center;
+}
+
+.b {
+	display: grid;
+	margin-top: -50px;
+}
+
+.b a {
+	text-align: left;
+	color: white;
+	background-color: blue;
+	padding: 10px 20px;
+	border-radius: 5px;
+}
