@@ -27,7 +27,7 @@ ul, li{
   padding: 3rem 0;
 }
 .wrapper{
-  background: blue;
+  /* background: #0c2461; */
   padding: 2rem;
   border-radius: 15px;
 }
@@ -127,7 +127,7 @@ ul, li{
 .wrapper{
   display: grid;
   justify-content: center;
-  background: blue;
+  /* background: #0c2461; */
 /*  backgroung-linear:(255,255,255,0.9);*/
   padding: 11px;
   margin: 1rem;
@@ -224,14 +224,54 @@ p {
 
 .container {
   margin:  20px;
+  margin-top: 0;
   display: grid;
 }
 .mapbox {
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
 }
 
 .mapDiagram {
   border-radius: 5px;
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.padding-btn {
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.text-image {
+  border: 1px solid white;
+}
+.map-image {
+  display: none;
+  border: 1px solid white;
+}
+
+.arrow {
+  display: flex;
+  justify-content: center;
+}
+.span-down, .span-up {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+.down {
+  z-index: 2;
+  display: none;
+}
+.up {
+  display: none;
+  z-index: 2;
+  transform: rotate(180deg);
 }
