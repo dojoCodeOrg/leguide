@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="../assets/style.css">
 	  <link rel="stylesheet" type="text/css" href="home.css">
     <title>LeGuide</title>
+    <script src="../assets/script/script_menu.js" defer></script>
 
     <!-- go script -->
     <script src="https://unpkg.com/gojs"></script>
@@ -28,18 +29,26 @@
 
 </head>
 <body>
+  <br><br>
+  <div class="menu">
+    <div class="hover-clickable bg-blue-black text-black-blue padding-btn"><p id="text">Chemin</p></div>
+    <div class="hover-clickable bg-blue-black padding-btn"><p id="card">Carte</p></div>
+  </div>
+  <br><br>
+
+  
     <div class="container">
         <div class="wrapper">
-          <h1>BUS N°10</h1>
-          <h1>De : GARE NORD ADJAME à LA GARE SUD PLATEAU</h1>
+          <h1 class="text-black-blue-600">BUS N°10</h1>
+          <h1 class="text-black-blue-600">De : GARE NORD ADJAME à LA GARE SUD PLATEAU</h1>
           <ul class="sessions">
             <li>
-              <div class="time">Adjamé</div>
-              <p>Gare Nord - Forum</p>
+              <div class="time text-black-blue">Adjamé</div>
+              <p class="text-black-blue">Gare Nord - Forum</p>
             </li>
             <li>
-              <div class="time">Plateau</div>
-              <p>Musée - la BAD - Palais de la Justice - Cité Financière - Les 60 Logement - Galérie du Parc - Gare Sud</p>
+              <div class="time text-black-blue">Plateau</div>
+              <p class="text-black-blue">Musée - la BAD - Palais de la Justice - Cité Financière - Les 60 Logement - Galérie du Parc - Gare Sud</p>
             </li>
           </ul>
         </div>
@@ -78,6 +87,21 @@
 
 <!-- script mapbox -->
 <script id="code">
+const text = document.querySelector('#text');
+const card = document.querySelector('#card');
+const container = document.querySelector('.container');
+const mapbox = document.querySelector('.mapbox');
+
+text.addEventListener('click', () => {
+    container.style.display = 'flex';
+    mapbox.style.display = 'none';
+})
+card.addEventListener('click', () => {
+    container.style.display = 'none';
+    mapbox.style.display = 'flex';
+    init();
+})
+
 function init() {
   if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
 
@@ -202,7 +226,7 @@ function init() {
       { from: "Gare Sud", to: "Gare Nord" },
     ]);
 } // end init
-window.addEventListener('DOMContentLoaded', init);
+// window.addEventListener('DOMContentLoaded', init);
 </script>
 <!--  This script is part of the gojs.net website, and is not needed to run the sample -->
 <script src="../assets/js/goSamples.js"></script>
