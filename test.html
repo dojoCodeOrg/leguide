@@ -20,7 +20,7 @@
     <style type="text/css">
     /* CSS applied to the Leaflet map */
       .mapDiagram {
-        border: solid 1px #0c2461;
+        border: solid 1px black;
         width: 500px;
         height: 500px;
       }
@@ -35,8 +35,8 @@ function init() {
 
   /* Leaflet init */
 
-  const defaultZoom = 55;
-  const defaultOrigin = [5.314931, -4.018966];
+  const defaultZoom = 6;
+  const defaultOrigin = [50.02185841773444, 0.15380859375];
 
   myLeafletMap = L.map("map", {}).setView(defaultOrigin, defaultZoom);
   L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -107,8 +107,8 @@ function init() {
       { toolTip: toolTipTemplate, locationSpot: go.Spot.Center, cursor: "pointer" },
       $(go.Shape, "Circle",
         {
-          fill: "rgba(0, 255, 0, .4)", stroke: "#082D47", strokeWidth: 2,
-          width: 20, height: 20
+          fill: "rgba(0, 255, 0, .4)", stroke: "#082D47", strokeWidth: 1,
+          width: 7, height: 7
         }),
       // A two-way data binding with an Array of latitude,longitude numbers.
       // We have to explicitly avoid updating the source data Array
@@ -129,7 +129,7 @@ function init() {
   myDiagram.linkTemplate =
     $(go.Link,
       { layerName: "Background", curve: go.Link.Bezier, curviness: 5 },
-      $(go.Shape, { strokeWidth: 5, stroke: "#0c2461" })
+      $(go.Shape, { strokeWidth: 3, stroke: "rgba(100,100,255,.7)" })
     );
 
   // DraggingTool needs to disable panning of Leaflet map
@@ -146,8 +146,12 @@ function init() {
   // create the model data that will be represented by Nodes and Links
   myDiagram.model = new go.GraphLinksModel(
     [
-      // France
-      { key: "Gare Sud", latlong: [5.314931, -4.018966] },
+      // Abidjan Bus 10
+      { key: "Gare Sud", latlong: [5.314696, -4.018542] },
+      { key: "BAD", latlong: [5.322329, -4.015409] },
+      { key: "Galerie des parques", latlong: [5.322885, -4.018848] },
+      { key: "60 logement", latlong: [5.325144, -4.020076] },
+      { key: "Cite financiere", latlong: [5.325144, -4.020076] },
       { key: "Gare Nord", latlong: [5.358606, -4.027452] },
     ],
     [
@@ -157,11 +161,11 @@ function init() {
 window.addEventListener('DOMContentLoaded', init);
 </script>
 
-    <div id="sample">
-      <div id="map" class="mapDiagram">
-        <div id="myDiagramDiv" class="mapDiagram"></div>
-      </div>  
-    </div>
+<div id="sample">
+  <div id="map" class="mapDiagram">
+    <div id="myDiagramDiv" class="mapDiagram"></div>
+  </div>  
+</div>
     </div>
     <!-- * * * * * * * * * * * * * -->
     <!--  End of GoJS sample code  -->
