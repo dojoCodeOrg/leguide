@@ -226,3 +226,12 @@ p {
   margin:  20px;
   display: grid;
 }
+.mapbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mapDiagram {
+  border-radius: 5px;
+}

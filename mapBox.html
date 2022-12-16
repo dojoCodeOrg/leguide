@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" type="text/css" href="../assets/style.css">
-	  <link rel="stylesheet" type="text/css" href="home.css">
-    <title>LeGuide</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"/>
+<meta name="description" content="A map integrating a GoJS Diagram and the Leaflet mapping library."/> 
+<link rel="stylesheet" href="../assets/css/style.css"/> 
+<!-- Copyright 1998-2022 by Northwoods Software Corporation. -->
+<title>Leaflet.js and GoJS</title>
+</head>
 
-    <!-- go script -->
+<body>
+    <!-- * * * * * * * * * * * * * -->
+    <!-- Start of GoJS sample code -->
+    
     <script src="https://unpkg.com/gojs"></script>
     <div id="allSampleContent" class="p-4 w-full">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
-    <style type="text/css">   
+    <style type="text/css">
     /* CSS applied to the Leaflet map */
       .mapDiagram {
         border: solid 1px #0c2461;
@@ -26,64 +29,13 @@
       }
     </style>
 
-</head>
-<body>
-    <div class="container">
-        <div class="wrapper">
-          <h1>BUS N°10</h1>
-          <h1>De : GARE NORD ADJAME à LA GARE SUD PLATEAU</h1>
-          <ul class="sessions">
-            <li>
-              <div class="time">Adjamé</div>
-              <p>Gare Nord - Forum</p>
-            </li>
-            <li>
-              <div class="time">Plateau</div>
-              <p>Musée - la BAD - Palais de la Justice - Cité Financière - Les 60 Logement - Galérie du Parc - Gare Sud</p>
-            </li>
-          </ul>
-        </div>
-    </div> 
-
-    <!-- --------------1.0--------------- -->
-    <div class="mapbox">
-      <div id="sample">
-        <div id="map" class="mapDiagram">
-          <div id="myDiagramDiv" class="mapDiagram"></div>
-        </div>  
-      </div>
-    </div>
-    <br><br><br>
-    <footer>
-      <div class="max-w-screen-xl mx-auto px-4 py-6 lg:py-12">
-          <div class="flex flex-col md:flex-row justify-between">
-              <a href="../index.html" target="_blank">LeGuide</a>
-              <div class="flex justify-between md:gap-20 mt-4 md:mt-0">
-                  <div>
-                      <p class="lg:text-xl font-medium mb-4">Nous contacter</p>
-                      <a href="mailto: hamedcuenca5@gmail.com" class="text-gray-400 font-roboto">Email</a>
-                  </div>                   
-                  <div>
-                      <p class="lg:text-xl font-medium mb-4">Nous suivre</p>
-                      <a href="https://www.youtube.com/@yayahc" target="_blank">
-                     <span class="hidden lg:inline text-gray-400">Youtube</span>
-                  </a>
-                  </div>
-              </div>
-          </div>
-          <p class="text-gray-400 font-roboto text-xs mt-4 md:-mt-8">Copyright © 2021 - DojoCode</p>
-      </div>
-  </footer>
-</body>
-
-<!-- script mapbox -->
 <script id="code">
 function init() {
   if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
 
   /* Leaflet init */
 
-  const defaultZoom = 25;
+  const defaultZoom = 55;
   const defaultOrigin = [5.314931, -4.018966];
 
   myLeafletMap = L.map("map", {}).setView(defaultOrigin, defaultZoom);
@@ -204,6 +156,17 @@ function init() {
 } // end init
 window.addEventListener('DOMContentLoaded', init);
 </script>
+
+    <div id="sample">
+      <div id="map" class="mapDiagram">
+        <div id="myDiagramDiv" class="mapDiagram"></div>
+      </div>  
+    </div>
+    </div>
+    <!-- * * * * * * * * * * * * * -->
+    <!--  End of GoJS sample code  -->
+  </div>
+</body>
 <!--  This script is part of the gojs.net website, and is not needed to run the sample -->
 <script src="../assets/js/goSamples.js"></script>
 </html>
