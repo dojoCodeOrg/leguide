@@ -248,3 +248,30 @@ p {
   padding: 10px 20px;
   border-radius: 5px;
 }
+
+.text-image {
+  border: 1px solid white;
+}
+.map-image {
+  display: none;
+  border: 1px solid white;
+}
+
+.arrow {
+  display: flex;
+  justify-content: center;
+}
+.span-down, .span-up {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+.down {
+  z-index: 2;
+  display: none;
+}
+.up {
+  display: none;
+  z-index: 2;
+  transform: rotate(180deg);
+}
