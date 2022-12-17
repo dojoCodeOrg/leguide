@@ -245,12 +245,16 @@
     // create the model data that will be represented by Nodes and Links
     myDiagram.model = new go.GraphLinksModel(
       [
-        // France
-        { key: "Gare Sud", latlong: [5.314931, -4.018966] },
+        // 10
+        { key: "Gare Sud", latlong: [5.314437, -4.018290] },
+        { key: "Samsung", latlong: [5.315468, -4.018145] },
+        { key: "Ecobank", latlong: [5.317214, -4.018295] },
         { key: "Gare Nord", latlong: [5.358606, -4.027452] },
       ],
       [
-        { from: "Gare Sud", to: "Gare Nord" },
+        { from: "Gare Sud", to: "Samsung" },
+        { from: "Samsung", to: "Ecobank" },
+        { from: "Ecobank", to: "Gare Nord" },
       ]);
   } // end init
   // window.addEventListener('DOMContentLoaded', init);
