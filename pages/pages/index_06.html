@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../assets/style/style_pages.css">
+    <link rel="stylesheet" type="text/css" href="../../assets/style/style.css">
+	  <link rel="stylesheet" type="text/css" href="../../assets/style/home.css">
+    <title>LeGuide</title>
+    <script src="../assets/script/script_menu.js" defer></script>
+
+    <!-- go script -->
+    <script src="https://unpkg.com/gojs"></script>
+    <div id="allSampleContent" class="p-4 w-full">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+    <style type="text/css">   
+    /* CSS applied to the Leaflet map */
+      .mapDiagram {
+        width: 900px;
+        height: 500px;
+      }
+      #myDiagramDiv {
+        z-index: 701;
+      }
+    </style>
+
+</head>
+<body>
+  <div id="isup"></div>
+  <br><br>
+  <div id="menu" class="menu">
+    <div class="hover-clickable bg-blue-black text-black-blue padding-btn"><p id="text">Chemin</p><p class="text-image"></p></div>
+    <div class="hover-clickable bg-blue-black padding-btn"><p id="!card">Carte</p><p class="map-image"></p></div>
+  </div>
+  <br>
+
+  <div class="arrow">
+    <div class="span-down"><span id="down" class="down"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z"/><path d="M12 12.586 8.707 9.293l-1.414 1.414L12 15.414l4.707-4.707-1.414-1.414L12 12.586z"/></svg></span></a>
+    </div><br>
+    <div class="span-up"><span id="up" class="up"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z"/><path d="M12 12.586 8.707 9.293l-1.414 1.414L12 15.414l4.707-4.707-1.414-1.414L12 12.586z"/></svg></span></a>
+    </div>
+  </div>
+  <br>
+  
+  <div class="container">
+    <div class="wrapper">
+      <h1 class="text-black-blue-600">Bus N°06</h1>
+      <h1 class="text-black-blue-600">De : L'AEROPORT HFB à LA GARE SUD</h1>
+      <ul class="sessions">
+        <li>
+          <div class="time text-black-blue">Port Bouët</div>
+          <p class="text-black-blue">Aéroport - Terminus 29 - Route de Bassam - P.B Phare - Grand marché - Hôpital General - Akwaba</p>
+        </li>
+        <li>
+          <div class="time text-black-blue">Marcory</div>
+          <p class="text-black-blue">Bietry - zone 4 Pergola </p>
+        </li>
+        <li>
+          <div class="time text-black-blue">Treichville</div>
+          <p class="text-black-blue">Boulevard de Marseille - Cité Policière /Pont FHB</p>
+        </li>
+        <li>
+          <div class="time text-black-blue">Plateau</div>
+          <p class="text-black-blue">Gare Sud</p>
+        </li>
+      </ul>
+    </div>
+</div> 
+
+    <!-- --------------1.0--------------- -->
+    <div class="mapbox">
+      <div id="sample">
+        <div id="map" class="mapDiagram">
+          <div id="myDiagramDiv" class="mapDiagram"></div>
+        </div>  
+      </div>
+    </div>
+
+    <br><br>
+    
+
+    <br>
+    <footer>
+      <div class="max-w-screen-xl mx-auto px-4 py-6 lg:py-12">
+          <div class="flex flex-col md:flex-row justify-between">
+              <a href="#" class="text-black-blue-600" target="_blank">LeGuide</a>
+              <div class="flex justify-between md:gap-20 mt-4 md:mt-0">
+                  <div>
+                      <p class="lg:text-xl font-medium mb-4 text-black-blue-600">Nous contacter</p>
+                      <a href="mailto: hamedcuenca5@gmail.com" class="text-black-blue-500 font-roboto">> Email</a>
+                  </div>                   
+                  <!-- <div>
+                      <p class="lg:text-xl font-medium mb-4">Nous suivre</p>
+                      <a href="https://www.youtube.com/@yayahc" target="_blank">
+                     <span class="hidden lg:inline text-gray-400">Youtube</span>
+                  </a>
+                  </div> -->
+              </div>
+          </div>
+          <p class="text-black-blue-500 font-roboto text-xs mt-4 md:-mt-8">Copyright © 2021 - DojoCode</p>
+      </div>
+  </footer>
+</body>
+
+<!-- script mapbox -->
+<script id="code">
+  // menu script -----------------------------
+  const text = document.querySelector('#text');
+  const card = document.querySelector('#card');
+  const container = document.querySelector('.container');
+  const mapbox = document.querySelector('.mapbox');
+  const text_img = document.querySelector('.text-image');
+  const map_img = document.querySelector('.map-image');
+  const down = document.querySelector('.down');
+  const up = document.querySelector('.up');
+
+
+  text.addEventListener('click', () => {
+      container.style.display = 'flex';
+      mapbox.style.display = 'none';
+      text_img.style.display = 'block';
+      map_img.style.display = 'none';
+      down.style.display = 'none';
+      up.style.display = 'none';
+  })
+  card.addEventListener('click', () => {
+      container.style.display = 'none';
+      mapbox.style.display = 'flex';
+      text_img.style.display = 'none';
+      map_img.style.display = 'block';
+      down.style.display = 'block';
+      up.style.display = 'block';
+
+      init();
+  })
+  // ---------------------------------------
+
+  function init() {
+    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+
+    /* Leaflet init */
+
+    const defaultZoom = 25;
+    const defaultOrigin = [5.314931, -4.018966];
+
+    myLeafletMap = L.map("map", {}).setView(defaultOrigin, defaultZoom);
+    L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+      attribution: '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 18,
+      minZoom: 2,
+      tileSize: 512,
+      zoomOffset: -1,
+      id: "mapbox/streets-v11",
+      accessToken: "pk.eyJ1IjoiZ29qcyIsImEiOiJjaXppcnNkbDgwMzQ3MnFsNDFnY2phb2QwIn0.7AuVKrWdxQnJxa_W7qC3-w"
+    }).addTo(myLeafletMap);
+
+    myLeafletMap.on("zoomend", updateNodes);
+    myLeafletMap.on("move", updatePosition);
+    myLeafletMap.on("moveend", updatePosition);
+
+    let myUpdatingGoJS = false;  // prevent modifying data.latlong properties upon Leaflet "move" events
+    function updateNodes() {  // called when zoom level has changed
+      myUpdatingGoJS = true;
+      myDiagram.commit(diag => {
+        diag.nodes.each(n => n.updateTargetBindings("latlong")); // without virtualization this can be slow if there are many nodes
+      }, null);
+      myUpdatingGoJS = false;
+    }
+    function updatePosition() {  // called when map has been panned (i.e. top-left corner is at a different latlong)
+      const mapb = myLeafletMap.getBounds();
+      const pos = myLeafletMap.project([mapb.getNorth(), mapb.getWest()], myLeafletMap.getZoom());
+      myDiagram.position = new go.Point(pos.x, pos.y);
+    }
+
+    /* GoJS init */
+
+    // Since 2.2 you can also author concise templates with method chaining instead of GraphObject.make
+    // For details, see https://gojs.net/latest/intro/buildingObjects.html
+    const $ = go.GraphObject.make;
+    myDiagram = $(go.Diagram, "myDiagramDiv",
+      {
+        "InitialLayoutCompleted": e => updatePosition(),
+        "dragSelectingTool.isEnabled": false,
+        "animationManager.isEnabled": false,
+        scrollMode: go.Diagram.InfiniteScroll,
+        allowZoom: false,
+        allowHorizontalScroll: false,
+        allowVerticalScroll: false,
+        hasHorizontalScrollbar: false,
+        hasVerticalScrollbar: false,
+        padding: 0,
+        defaultCursor: "default",
+        "toolManager.hoverDelay": 100,  // how quickly tooltips are shown
+        "undoManager.isEnabled": true,
+        "ModelChanged": e => {
+          if (e.change === go.ChangedEvent.Transaction &&
+              (e.propertyName === "FinishedUndo" || e.propertyName === "FinishedRedo")) {
+            setTimeout(() => updateNodes());
+          }
+        },
+      });
+
+    const toolTipTemplate =
+      $("ToolTip",
+        $(go.TextBlock, { margin: 4 },
+          new go.Binding("text", "", d => d.key + "\nlocation: [" + d.latlong.join(", ") + "]"))
+      );
+
+    // the node template describes how each Node should be constructed
+    myDiagram.nodeTemplate =
+      $(go.Node, "Auto",
+        { toolTip: toolTipTemplate, locationSpot: go.Spot.Center, cursor: "pointer" },
+        $(go.Shape, "Circle",
+          {
+            fill: "rgba(0, 255, 0, .4)", stroke: "#082D47", strokeWidth: 2,
+            width: 20, height: 20
+          }),
+        // A two-way data binding with an Array of latitude,longitude numbers.
+        // We have to explicitly avoid updating the source data Array
+        // when myUpdatingGoJS is true; otherwise there would be accumulating errors.
+        new go.Binding("location", "latlong", data => {
+          const pos = myLeafletMap.project(data, myLeafletMap.getZoom());
+          return new go.Point(pos.x, pos.y);
+        }).makeTwoWay((pt, data) => {
+          if (myUpdatingGoJS) {
+            return data.latlong; // no-op
+          } else {
+            const ll = myLeafletMap.unproject(L.point(pt.x, pt.y), myLeafletMap.getZoom());
+            return [ll.lat, ll.lng];
+          }
+        })
+      );
+
+    myDiagram.linkTemplate =
+      $(go.Link,
+        { layerName: "Background", curve: go.Link.Bezier, curviness: 5 },
+        $(go.Shape, { strokeWidth: 5, stroke: "#0c2461" })
+      );
+
+    // DraggingTool needs to disable panning of Leaflet map
+    myDiagram.toolManager.draggingTool.doActivate = function() {
+      myLeafletMap.dragging.disable();
+      go.DraggingTool.prototype.doActivate.call(this);
+    }
+
+    myDiagram.toolManager.draggingTool.doDeactivate = function() {
+      myLeafletMap.dragging.enable();
+      go.DraggingTool.prototype.doDeactivate.call(this);
+    }
+
+    // create the model data that will be represented by Nodes and Links
+    myDiagram.model = new go.GraphLinksModel(
+      [
+        // France
+        { key: "Gare Sud", latlong: [5.314931, -4.018966] },
+        { key: "Gare Nord", latlong: [5.358606, -4.027452] },
+      ],
+      [
+        { from: "Gare Sud", to: "Gare Nord" },
+      ]);
+  } // end init
+  // window.addEventListener('DOMContentLoaded', init);
+</script>
+<!--  This script is part of the gojs.net website, and is not needed to run the sample -->
+<script src="../assets/js/goSamples.js"></script>
+</html>
