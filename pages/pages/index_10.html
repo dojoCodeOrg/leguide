@@ -17,10 +17,10 @@
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
     <style type="text/css">   
     /* CSS applied to the Leaflet map */
-      .mapDiagram {
-        width: 900px;
+      /* .mapDiagram {
+        width: 930px;
         height: 500px;
-      }
+      } */
       #myDiagramDiv {
         z-index: 701;
       }
@@ -30,11 +30,11 @@
 <body>
   <div id="isup"></div>
   <br><br>
-  <div id="menu" class="menu">
-    <div class="hover-clickable bg-blue-black text-black-blue padding-btn"><p id="text">Chemin</p><p class="text-image"></p></div>
-    <div class="hover-clickable bg-blue-black padding-btn"><p id="card">Carte</p><p class="map-image"></p></div>
-  </div>
-  <br>
+    <div id="menu" class="menu">
+      <div class="hover-clickable bg-blue-black text-black-blue padding-btn"><p id="text">Chemin</p><p class="text-image"></p></div>
+      <div class="hover-clickable bg-blue-black padding-btn"><p id="card">Carte</p><p class="map-image"></p></div>
+    </div>
+  <br><br>
   
     <div class="container">
         <div class="wrapper">
@@ -53,14 +53,14 @@
         </div>
     </div> 
 
-    <!-- --------------1.0--------------- -->
+<!-- --------------1.0--------------- -->
     <div class="mapbox">
       <div id="sample">
         <div id="map" class="mapDiagram">
           <div id="myDiagramDiv" class="mapDiagram"></div>
         </div>  
       </div>
-    </div>
+    </div>       
 
 </body>
 
@@ -73,8 +73,8 @@
   const mapbox = document.querySelector('.mapbox');
   const text_img = document.querySelector('.text-image');
   const map_img = document.querySelector('.map-image');
-  const down = document.querySelector('.down');
-  const up = document.querySelector('.up');
+  // const down = document.querySelector('.down');
+  // const up = document.querySelector('.up');
 
 
   text.addEventListener('click', () => {
@@ -82,16 +82,16 @@
       mapbox.style.display = 'none';
       text_img.style.display = 'block';
       map_img.style.display = 'none';
-      down.style.display = 'none';
-      up.style.display = 'none';
+      // down.style.display = 'none';
+      // up.style.display = 'none';
   })
   card.addEventListener('click', () => {
       container.style.display = 'none';
       mapbox.style.display = 'flex';
       text_img.style.display = 'none';
       map_img.style.display = 'block';
-      down.style.display = 'block';
-      up.style.display = 'block';
+      // down.style.display = 'block';
+      // up.style.display = 'block';
 
       init();
   })
@@ -102,7 +102,7 @@
 
     /* Leaflet init */
 
-    const defaultZoom = 25;
+    const defaultZoom = 19;
     const defaultOrigin = [5.314931, -4.018966];
 
     myLeafletMap = L.map("map", {}).setView(defaultOrigin, defaultZoom);

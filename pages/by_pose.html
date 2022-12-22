@@ -4,120 +4,64 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../assets/style/style_pages.css">
-    <link rel="stylesheet" type="text/css" href="../../assets/style/style.css">
-	  <link rel="stylesheet" type="text/css" href="../../assets/style/home.css">
+    <link rel="stylesheet" href="../assets/style/style_pages.css">
+    <link rel="stylesheet" type="text/css" href="../assets/style/style.css">
+	<link rel="stylesheet" type="text/css" href="../assets/style/home.css">
     <title>LeGuide</title>
-    <script src="../assets/script/script_menu.js" defer></script>
-
-    <!-- go script -->
-    <script src="https://unpkg.com/gojs"></script>
-    <div id="allSampleContent" class="p-4 w-full">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
-    <style type="text/css">   
-    /* CSS applied to the Leaflet map */
-      .mapDiagram {
-        width: 350px;
-        height: 500px;
-      }
-      #myDiagramDiv {
-        z-index: 701;
-      }
-    </style>
+     <!-- go script -->
+     <script src="https://unpkg.com/gojs"></script>
+     <div id="allSampleContent" class="p-4 w-full">
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+     <style type="text/css">   
+     /* CSS applied to the Leaflet map */
+       .mapDiagram {
+         width: 930px;
+         height: 500px;
+       }
+       #myDiagramDiv {
+         z-index: 701;
+       }
+     </style>
 
 </head>
 <body>
   <div id="isup"></div>
-  <br><br>
-  <div id="menu" class="menu">
-    <div class="hover-clickable bg-blue-black text-black-blue padding-btn"><p id="text">Chemin</p><p class="text-image"></p></div>
-    <div class="hover-clickable bg-blue-black padding-btn"><p id="card">Carte</p><p class="map-image"></p></div>
-  </div>
-  <br>
-
   
-  <div class="container">
-    <div class="wrapper">
-      <h1 class="text-black-blue-600">BUS N° 02</h1>
-      <h1 class="text-black-blue-600">De : GARE MARCORY à CITE FAIRMONT</h1>
-      <ul class="sessions">
-        <li>
-          <div class="time text-black-blue">Marcory</div>
-          <p class="text-black-blue">INJS - Ste Thérèse - Grand Carrefour - GSPM Zone 4 - Mairie - Boulevard de Marseille</p>
-        </li>
-        <li>
-          <div class="time text-black-blue">Treichville</div>
-          <p class="text-black-blue">Boulevard de Marseille - Cité Policière / Pont FHB </p>
-        </li>
-        <li>
-          <div class="time text-black-blue">Plateau</div>
-          <p class="text-black-blue">Primature - SIB ALPHA 2000 - Cité Financière - Palais de la justice - la BAD - Cité Administrative - Musée</p>
-        </li>
-        <li>
-          <div class="time text-black-blue">Adjamé</div>
-          <p class="text-black-blue">INSP - Forum - Grande Mosquée - Gare Nord</p>
-        </li>
-        <li>
-          <div class="time text-black-blue">Atécoubé</div>
-          <p class="text-black-blue">Cité Fairmond</p>
-        </li>
-      </ul>
-    </div>
-</div> 
+    <div class="container">
+          <button id="get-location">Me Trouver</button>    
+          <div class="mapbox">
+            <div id="sample">
+              <div id="map" class="mapDiagram">
+                <div id="myDiagramDiv" class="mapDiagram"></div>
+              </div>  
+            </div>
+          </div>      
+    </div> 
 
-    <!-- --------------1.0--------------- -->
-    <div class="mapbox">
-      <div id="sample">
-        <div id="map" class="mapDiagram">
-          <div id="myDiagramDiv" class="mapDiagram"></div>
-        </div>  
-      </div>
-    </div>
-
-  
-</body>
-
-<!-- script mapbox -->
+<!-- --------------1.0--------------- -->     
 <script id="code">
-  // menu script -----------------------------
-  const text = document.querySelector('#text');
-  const card = document.querySelector('#card');
-  const container = document.querySelector('.container');
-  const mapbox = document.querySelector('.mapbox');
-  const text_img = document.querySelector('.text-image');
-  const map_img = document.querySelector('.map-image');
-  // const down = document.querySelector('.down');
-  // const up = document.querySelector('.up');
+let button = document.getElementById("get-location");
+let lat = 0;
+let long = 0;
 
+button.addEventListener("click", () => {
+  navigator.geolocation.getCurrentPosition((position) => {
+    lat = position.coords.latitude;
+    long = position.coords.longitude;
 
-  text.addEventListener('click', () => {
-      container.style.display = 'flex';
-      mapbox.style.display = 'none';
-      text_img.style.display = 'block';
-      map_img.style.display = 'none';
-      // down.style.display = 'none';
-      // up.style.display = 'none';
-  })
-  card.addEventListener('click', () => {
-      container.style.display = 'none';
-      mapbox.style.display = 'flex';
-      text_img.style.display = 'none';
-      map_img.style.display = 'block';
-      // down.style.display = 'block';
-      // up.style.display = 'block';
+    console.log(lat, long);
+    init(lat, long);
+  });
+});
 
-      init();
-  })
-  // ---------------------------------------
-
-  function init() {
+function init(lat, long) {
     if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
 
     /* Leaflet init */
 
-    const defaultZoom = 25;
-    const defaultOrigin = [5.314931, -4.018966];
+    const defaultZoom = 19;
+    const defaultOrigin = [lat, long];
 
     myLeafletMap = L.map("map", {}).setView(defaultOrigin, defaultZoom);
     L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -226,17 +170,15 @@
 
     // create the model data that will be represented by Nodes and Links
     myDiagram.model = new go.GraphLinksModel(
-      [
-        // France
-        { key: "Gare Sud", latlong: [5.314931, -4.018966] },
-        { key: "Gare Nord", latlong: [5.358606, -4.027452] },
+      [      
+        { key: "Gare Sud", latlong: [5.314437, -4.018290] },
       ],
       [
-        { from: "Gare Sud", to: "Gare Nord" },
+        { from: "Gare Sud", to: "Gare Sud" },
       ]);
   } // end init
   // window.addEventListener('DOMContentLoaded', init);
 </script>
-<!--  This script is part of the gojs.net website, and is not needed to run the sample -->
-<script src="../assets/js/goSamples.js"></script>
+
+</body>
 </html>

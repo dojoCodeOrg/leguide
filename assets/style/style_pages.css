@@ -12,6 +12,21 @@
     @media screen and (max-width: 600px) { @content; }
 }
 
+.mapDiagram {
+  width: 330px;
+  height: 500px;
+}
+
+@media screen and (min-width: 869px) { 
+  .mapDiagram {
+    width: 700px;
+  }
+}
+@media screen and (min-width: 1069px) { 
+  .mapDiagram {
+    width: 1000px;
+  }
+}
 
 ul, li{
   list-style: none;
@@ -97,7 +112,7 @@ p {
 
 
 @mixin tablet-and-up {
-    @media screen and (min-width: 769px) { @content; }
+    @media screen and (min-width: 769px) { @content;}
 }
 @mixin mobile-and-up {
     @media screen and (min-width: 601px) { @content; }
@@ -242,6 +257,8 @@ p {
   justify-content: center;
   align-items: center;
   gap: 2rem;
+  /* position: fixed; */
+  z-index: 710;
 }
 
 .padding-btn {
