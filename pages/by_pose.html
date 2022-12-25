@@ -37,15 +37,12 @@
   <br><br>
 
     <!-- --------------1.0--------------- -->
-    <div class="mapbox">
-      <div id="sample">
+    <div id="mapbox" class="mapbox">
+      <!-- <div id="sample">
         <div id="map" class="mapDiagram">
           <div id="myDiagramDiv" class="mapDiagram"></div>
-        </div>  
-        <div id="map-stop" class="mapDiagram">
-          <div id="myDiagramDiv" class="mapDiagram"></div>
-        </div>  
-      </div>
+        </div>      
+      </div> -->
     </div>
 
   <br>
@@ -59,7 +56,6 @@
 const button = document.getElementById("get-location");
 const stop = document.getElementById("get-stop");
 const map = document.getElementById("map");
-const map_stop = document.getElementById("map-stop");
 
 button.addEventListener("click", () => {
 
@@ -78,8 +74,6 @@ button.addEventListener("click", () => {
 });
 
 stop.addEventListener("click", () => {
-  map.style.display = 'none';
-  map_stop.style.display = 'flex';
   let lat = 0;
   let long = 0;
   navigator.geolocation.getCurrentPosition((position) => {
@@ -91,6 +85,25 @@ stop.addEventListener("click", () => {
 })
 
 function init(lat, long) {
+  const element = document.getElementById("mapbox");
+  if (element.textContent != "") {
+    element.textContent = ""
+  }
+
+  const sample = document.createElement("div");
+  sample.setAttribute('id', 'sample');
+  element.appendChild(sample);
+
+  const map = document.createElement("div");
+  map.setAttribute('id', 'map');
+  map.setAttribute('class', 'mapDiagram');
+  sample.appendChild(map);
+
+  const mapdia = document.createElement("div");
+  mapdia.setAttribute('id', 'myDiagramDiv');
+  mapdia.setAttribute('class', 'mapDiagram');
+  map.appendChild(mapdia);
+
   
   if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
 
@@ -218,8 +231,26 @@ function init(lat, long) {
 
 // ==========
 
-
 function init_stop(lat, long) {
+  const element = document.getElementById("mapbox");
+  if (element.textContent != "") {
+    element.textContent = ""
+  }
+
+  const sample = document.createElement("div");
+  sample.setAttribute('id', 'sample');
+  element.appendChild(sample);
+
+  const map = document.createElement("div");
+  map.setAttribute('id', 'map');
+  map.setAttribute('class', 'mapDiagram');
+  sample.appendChild(map);
+
+  const mapdia = document.createElement("div");
+  mapdia.setAttribute('id', 'myDiagramDiv');
+  mapdia.setAttribute('class', 'mapDiagram');
+  map.appendChild(mapdia);
+
   
   if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
 
@@ -228,7 +259,7 @@ function init_stop(lat, long) {
   const defaultZoom = 25;
   const defaultOrigin = [lat, long];
 
-  myLeafletMap = L.map("map-stop", {}).setView(defaultOrigin, defaultZoom);
+  myLeafletMap = L.map("map", {}).setView(defaultOrigin, defaultZoom);
   L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: 18,
@@ -335,16 +366,18 @@ function init_stop(lat, long) {
 
   // create the model data that will be represented by Nodes and Links
   myDiagram.model = new go.GraphLinksModel(
-    [
-      { key: "user", latlong: [lat, long] },
-      { key: "Gare Nord", latlong: [5.358606, -4.027452] },
-      { key: "Gare Sud", latlong: [5.314437, -4.018290] },
-    ],
-    [
-      { from: "user", to: "Gare Nord" },
-      { from: "user", to: "Gare Sud" },
-    ]);
-} // end init_stop
+  [
+    { key: "user", latlong: [lat, long] },
+    { key: "Gare Nord", latlong: [5.358606, -4.027452] },
+    { key: "Gare Sud", latlong: [5.314437, -4.018290] },
+  ],
+  [
+    { from: "user", to: "Gare Nord" },
+    { from: "user", to: "Gare Sud" },
+  ]); 
+} // end init
+
+
 </script>
 <!--  This script is part of the gojs.net website, and is not needed to run the sample -->
 <script src="../assets/js/goSamples.js"></script>
