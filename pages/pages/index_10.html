@@ -17,10 +17,10 @@
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
     <style type="text/css">   
     /* CSS applied to the Leaflet map */
-      .mapDiagram {
-        width: 900px;
+      /* .mapDiagram {
+        width: 930px;
         height: 500px;
-      }
+      } */
       #myDiagramDiv {
         z-index: 701;
       }
@@ -30,19 +30,11 @@
 <body>
   <div id="isup"></div>
   <br><br>
-  <div id="menu" class="menu">
-    <div class="hover-clickable bg-blue-black text-black-blue padding-btn"><p id="text">Chemin</p><p class="text-image"></p></div>
-    <div class="hover-clickable bg-blue-black padding-btn"><p id="card">Carte</p><p class="map-image"></p></div>
-  </div>
-  <br>
-
-  <div class="arrow">
-    <div class="span-down"><span id="down" class="down"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z"/><path d="M12 12.586 8.707 9.293l-1.414 1.414L12 15.414l4.707-4.707-1.414-1.414L12 12.586z"/></svg></span></a>
-    </div><br>
-    <div class="span-up"><span id="up" class="up"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z"/><path d="M12 12.586 8.707 9.293l-1.414 1.414L12 15.414l4.707-4.707-1.414-1.414L12 12.586z"/></svg></span></a>
+    <div id="menu" class="menu">
+      <div class="hover-clickable bg-blue-black text-black-blue padding-btn"><p id="text">Chemin</p><p class="text-image"></p></div>
+      <div class="hover-clickable bg-blue-black padding-btn"><p id="card">Carte</p><p class="map-image"></p></div>
     </div>
-  </div>
-  <br>
+  <br><br>
   
     <div class="container">
         <div class="wrapper">
@@ -61,39 +53,15 @@
         </div>
     </div> 
 
-    <!-- --------------1.0--------------- -->
+<!-- --------------1.0--------------- -->
     <div class="mapbox">
       <div id="sample">
         <div id="map" class="mapDiagram">
           <div id="myDiagramDiv" class="mapDiagram"></div>
         </div>  
       </div>
-    </div>
+    </div>       
 
-    <br><br>
-    
-
-    <br>
-    <footer>
-      <div class="max-w-screen-xl mx-auto px-4 py-6 lg:py-12">
-          <div class="flex flex-col md:flex-row justify-between">
-              <a href="#" class="text-black-blue-600" target="_blank">LeGuide</a>
-              <div class="flex justify-between md:gap-20 mt-4 md:mt-0">
-                  <div>
-                      <p class="lg:text-xl font-medium mb-4 text-black-blue-600">Nous contacter</p>
-                      <a href="mailto: hamedcuenca5@gmail.com" class="text-black-blue-500 font-roboto">> Email</a>
-                  </div>                   
-                  <!-- <div>
-                      <p class="lg:text-xl font-medium mb-4">Nous suivre</p>
-                      <a href="https://www.youtube.com/@yayahc" target="_blank">
-                     <span class="hidden lg:inline text-gray-400">Youtube</span>
-                  </a>
-                  </div> -->
-              </div>
-          </div>
-          <p class="text-black-blue-500 font-roboto text-xs mt-4 md:-mt-8">Copyright © 2021 - DojoCode</p>
-      </div>
-  </footer>
 </body>
 
 <!-- script mapbox -->
@@ -105,8 +73,8 @@
   const mapbox = document.querySelector('.mapbox');
   const text_img = document.querySelector('.text-image');
   const map_img = document.querySelector('.map-image');
-  const down = document.querySelector('.down');
-  const up = document.querySelector('.up');
+  // const down = document.querySelector('.down');
+  // const up = document.querySelector('.up');
 
 
   text.addEventListener('click', () => {
@@ -114,16 +82,16 @@
       mapbox.style.display = 'none';
       text_img.style.display = 'block';
       map_img.style.display = 'none';
-      down.style.display = 'none';
-      up.style.display = 'none';
+      // down.style.display = 'none';
+      // up.style.display = 'none';
   })
   card.addEventListener('click', () => {
       container.style.display = 'none';
       mapbox.style.display = 'flex';
       text_img.style.display = 'none';
       map_img.style.display = 'block';
-      down.style.display = 'block';
-      up.style.display = 'block';
+      // down.style.display = 'block';
+      // up.style.display = 'block';
 
       init();
   })
@@ -134,7 +102,7 @@
 
     /* Leaflet init */
 
-    const defaultZoom = 25;
+    const defaultZoom = 19;
     const defaultOrigin = [5.314931, -4.018966];
 
     myLeafletMap = L.map("map", {}).setView(defaultOrigin, defaultZoom);
@@ -245,12 +213,16 @@
     // create the model data that will be represented by Nodes and Links
     myDiagram.model = new go.GraphLinksModel(
       [
-        // France
-        { key: "Gare Sud", latlong: [5.314931, -4.018966] },
+        // 10
+        { key: "Gare Sud", latlong: [5.314437, -4.018290] },
+        { key: "Samsung", latlong: [5.315468, -4.018145] },
+        { key: "Ecobank", latlong: [5.317214, -4.018295] },
         { key: "Gare Nord", latlong: [5.358606, -4.027452] },
       ],
       [
-        { from: "Gare Sud", to: "Gare Nord" },
+        { from: "Gare Sud", to: "Samsung" },
+        { from: "Samsung", to: "Ecobank" },
+        { from: "Ecobank", to: "Gare Nord" },
       ]);
   } // end init
   // window.addEventListener('DOMContentLoaded', init);

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/style/style.css">
+    <link rel="stylesheet" href="../assets/style/pose.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../assets/style/style_pages.css"> -->
+	  <link rel="stylesheet" type="text/css" href="../assets/style/home.css">
+    <title>LeGuide</title>
+
+    <!-- go script -->
+    <script src="https://unpkg.com/gojs"></script>
+    <div id="allSampleContent" class="p-4 w-full">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+    <style type="text/css">   
+    /* CSS applied to the Leaflet map */
+      .mapDiagram {
+        border: solid 1px #0c2461;
+        width: 330px;
+        height: 500px;
+      }
+      #myDiagramDiv {
+        z-index: 701;
+      }
+    </style>
+
+</head>
+<body>
+  <br>
+    <div class="menu-pose">
+        <button id="get-location" class="hover-clickable bg-blue-black padding-btn text-white">Me Trouver</button>              
+        <button id="get-stop" class="hover-clickable bg-blue-black padding-btn text-white">Arret a proxmite</button>              
+    </div> 
+  <br><br>
+
+    <!-- --------------1.0--------------- -->
+    <div id="mapbox" class="mapbox">
+      <!-- <div id="sample">
+        <div id="map" class="mapDiagram">
+          <div id="myDiagramDiv" class="mapDiagram"></div>
+        </div>      
+      </div> -->
+    </div>
+
+  <br>
+</body>
+
+<!-- script mapbox -->
+<script id="code">
+
+// ------------------------------------------------------------------------------
+
+const button = document.getElementById("get-location");
+const stop = document.getElementById("get-stop");
+const map = document.getElementById("map");
+
+button.addEventListener("click", () => {
+
+  // --menu
+  stop.style.display = 'flex';
+
+
+  let lat = 0;
+  let long = 0;
+  navigator.geolocation.getCurrentPosition((position) => {
+      lat = position.coords.latitude;
+      long = position.coords.longitude;
+      console.log(lat, long); 
+      init(lat, long);
+    });
+});
+
+stop.addEventListener("click", () => {
+  let lat = 0;
+  let long = 0;
+  navigator.geolocation.getCurrentPosition((position) => {
+      lat = position.coords.latitude;
+      long = position.coords.longitude;
+      console.log(lat, long); 
+      init_stop(lat, long);
+  });
+})
+
+function init(lat, long) {
+  const element = document.getElementById("mapbox");
+  if (element.textContent != "") {
+    element.textContent = ""
+  }
+
+  const sample = document.createElement("div");
+  sample.setAttribute('id', 'sample');
+  element.appendChild(sample);
+
+  const map = document.createElement("div");
+  map.setAttribute('id', 'map');
+  map.setAttribute('class', 'mapDiagram');
+  sample.appendChild(map);
+
+  const mapdia = document.createElement("div");
+  mapdia.setAttribute('id', 'myDiagramDiv');
+  mapdia.setAttribute('class', 'mapDiagram');
+  map.appendChild(mapdia);
+
+  
+  if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+
+  /* Leaflet init */
+
+  const defaultZoom = 25;
+  const defaultOrigin = [lat, long];
+
+  myLeafletMap = L.map("map", {}).setView(defaultOrigin, defaultZoom);
+  L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 18,
+    minZoom: 2,
+    tileSize: 512,
+    zoomOffset: -1,
+    id: "mapbox/streets-v11",
+    accessToken: "pk.eyJ1IjoiZ29qcyIsImEiOiJjaXppcnNkbDgwMzQ3MnFsNDFnY2phb2QwIn0.7AuVKrWdxQnJxa_W7qC3-w"
+  }).addTo(myLeafletMap);
+
+  myLeafletMap.on("zoomend", updateNodes);
+  myLeafletMap.on("move", updatePosition);
+  myLeafletMap.on("moveend", updatePosition);
+
+  let myUpdatingGoJS = false;  // prevent modifying data.latlong properties upon Leaflet "move" events
+  function updateNodes() {  // called when zoom level has changed
+    myUpdatingGoJS = true;
+    myDiagram.commit(diag => {
+      diag.nodes.each(n => n.updateTargetBindings("latlong")); // without virtualization this can be slow if there are many nodes
+    }, null);
+    myUpdatingGoJS = false;
+  }
+  function updatePosition() {  // called when map has been panned (i.e. top-left corner is at a different latlong)
+    const mapb = myLeafletMap.getBounds();
+    const pos = myLeafletMap.project([mapb.getNorth(), mapb.getWest()], myLeafletMap.getZoom());
+    myDiagram.position = new go.Point(pos.x, pos.y);
+  }
+
+  /* GoJS init */
+
+  // Since 2.2 you can also author concise templates with method chaining instead of GraphObject.make
+  // For details, see https://gojs.net/latest/intro/buildingObjects.html
+  const $ = go.GraphObject.make;
+  myDiagram = $(go.Diagram, "myDiagramDiv",
+    {
+      "InitialLayoutCompleted": e => updatePosition(),
+      "dragSelectingTool.isEnabled": false,
+      "animationManager.isEnabled": false,
+      scrollMode: go.Diagram.InfiniteScroll,
+      allowZoom: false,
+      allowHorizontalScroll: false,
+      allowVerticalScroll: false,
+      hasHorizontalScrollbar: false,
+      hasVerticalScrollbar: false,
+      padding: 0,
+      defaultCursor: "default",
+      "toolManager.hoverDelay": 100,  // how quickly tooltips are shown
+      "undoManager.isEnabled": true,
+      "ModelChanged": e => {
+        if (e.change === go.ChangedEvent.Transaction &&
+            (e.propertyName === "FinishedUndo" || e.propertyName === "FinishedRedo")) {
+          setTimeout(() => updateNodes());
+        }
+      },
+    });
+
+  const toolTipTemplate =
+    $("ToolTip",
+      $(go.TextBlock, { margin: 4 },
+        new go.Binding("text", "", d => d.key + "\nlocation: [" + d.latlong.join(", ") + "]"))
+    );
+
+  // the node template describes how each Node should be constructed
+  myDiagram.nodeTemplate =
+    $(go.Node, "Auto",
+      { toolTip: toolTipTemplate, locationSpot: go.Spot.Center, cursor: "pointer" },
+      $(go.Shape, "Circle",
+        {
+          fill: "rgba(0, 255, 0, .4)", stroke: "#082D47", strokeWidth: 2,
+          width: 20, height: 20
+        }),
+      // A two-way data binding with an Array of latitude,longitude numbers.
+      // We have to explicitly avoid updating the source data Array
+      // when myUpdatingGoJS is true; otherwise there would be accumulating errors.
+      new go.Binding("location", "latlong", data => {
+        const pos = myLeafletMap.project(data, myLeafletMap.getZoom());
+        return new go.Point(pos.x, pos.y);
+      }).makeTwoWay((pt, data) => {
+        if (myUpdatingGoJS) {
+          return data.latlong; // no-op
+        } else {
+          const ll = myLeafletMap.unproject(L.point(pt.x, pt.y), myLeafletMap.getZoom());
+          return [ll.lat, ll.lng];
+        }
+      })
+    );
+
+  myDiagram.linkTemplate =
+    $(go.Link,
+      { layerName: "Background", curve: go.Link.Bezier, curviness: 5 },
+      $(go.Shape, { strokeWidth: 5, stroke: "#0c2461" })
+    );
+
+  // DraggingTool needs to disable panning of Leaflet map
+  myDiagram.toolManager.draggingTool.doActivate = function() {
+    myLeafletMap.dragging.disable();
+    go.DraggingTool.prototype.doActivate.call(this);
+  }
+
+  myDiagram.toolManager.draggingTool.doDeactivate = function() {
+    myLeafletMap.dragging.enable();
+    go.DraggingTool.prototype.doDeactivate.call(this);
+  }
+
+  // create the model data that will be represented by Nodes and Links
+  myDiagram.model = new go.GraphLinksModel(
+    [
+    { key: "user", latlong: [lat, long] },
+
+    ],
+    [
+      
+    ]);
+} // end init
+
+
+// ==========
+
+function init_stop(lat, long) {
+  const element = document.getElementById("mapbox");
+  if (element.textContent != "") {
+    element.textContent = ""
+  }
+
+  const sample = document.createElement("div");
+  sample.setAttribute('id', 'sample');
+  element.appendChild(sample);
+
+  const map = document.createElement("div");
+  map.setAttribute('id', 'map');
+  map.setAttribute('class', 'mapDiagram');
+  sample.appendChild(map);
+
+  const mapdia = document.createElement("div");
+  mapdia.setAttribute('id', 'myDiagramDiv');
+  mapdia.setAttribute('class', 'mapDiagram');
+  map.appendChild(mapdia);
+
+  
+  if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+
+  /* Leaflet init */
+
+  const defaultZoom = 25;
+  const defaultOrigin = [lat, long];
+
+  myLeafletMap = L.map("map", {}).setView(defaultOrigin, defaultZoom);
+  L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 18,
+    minZoom: 2,
+    tileSize: 512,
+    zoomOffset: -1,
+    id: "mapbox/streets-v11",
+    accessToken: "pk.eyJ1IjoiZ29qcyIsImEiOiJjaXppcnNkbDgwMzQ3MnFsNDFnY2phb2QwIn0.7AuVKrWdxQnJxa_W7qC3-w"
+  }).addTo(myLeafletMap);
+
+  myLeafletMap.on("zoomend", updateNodes);
+  myLeafletMap.on("move", updatePosition);
+  myLeafletMap.on("moveend", updatePosition);
+
+  let myUpdatingGoJS = false;  // prevent modifying data.latlong properties upon Leaflet "move" events
+  function updateNodes() {  // called when zoom level has changed
+    myUpdatingGoJS = true;
+    myDiagram.commit(diag => {
+      diag.nodes.each(n => n.updateTargetBindings("latlong")); // without virtualization this can be slow if there are many nodes
+    }, null);
+    myUpdatingGoJS = false;
+  }
+  function updatePosition() {  // called when map has been panned (i.e. top-left corner is at a different latlong)
+    const mapb = myLeafletMap.getBounds();
+    const pos = myLeafletMap.project([mapb.getNorth(), mapb.getWest()], myLeafletMap.getZoom());
+    myDiagram.position = new go.Point(pos.x, pos.y);
+  }
+
+  /* GoJS init */
+
+  // Since 2.2 you can also author concise templates with method chaining instead of GraphObject.make
+  // For details, see https://gojs.net/latest/intro/buildingObjects.html
+  const $ = go.GraphObject.make;
+  myDiagram = $(go.Diagram, "myDiagramDiv",
+    {
+      "InitialLayoutCompleted": e => updatePosition(),
+      "dragSelectingTool.isEnabled": false,
+      "animationManager.isEnabled": false,
+      scrollMode: go.Diagram.InfiniteScroll,
+      allowZoom: false,
+      allowHorizontalScroll: false,
+      allowVerticalScroll: false,
+      hasHorizontalScrollbar: false,
+      hasVerticalScrollbar: false,
+      padding: 0,
+      defaultCursor: "default",
+      "toolManager.hoverDelay": 100,  // how quickly tooltips are shown
+      "undoManager.isEnabled": true,
+      "ModelChanged": e => {
+        if (e.change === go.ChangedEvent.Transaction &&
+            (e.propertyName === "FinishedUndo" || e.propertyName === "FinishedRedo")) {
+          setTimeout(() => updateNodes());
+        }
+      },
+    });
+
+  const toolTipTemplate =
+    $("ToolTip",
+      $(go.TextBlock, { margin: 4 },
+        new go.Binding("text", "", d => d.key + "\nlocation: [" + d.latlong.join(", ") + "]"))
+    );
+
+  // the node template describes how each Node should be constructed
+  myDiagram.nodeTemplate =
+    $(go.Node, "Auto",
+      { toolTip: toolTipTemplate, locationSpot: go.Spot.Center, cursor: "pointer" },
+      $(go.Shape, "Circle",
+        {
+          fill: "rgba(0, 255, 0, .4)", stroke: "#082D47", strokeWidth: 2,
+          width: 20, height: 20
+        }),
+      // A two-way data binding with an Array of latitude,longitude numbers.
+      // We have to explicitly avoid updating the source data Array
+      // when myUpdatingGoJS is true; otherwise there would be accumulating errors.
+      new go.Binding("location", "latlong", data => {
+        const pos = myLeafletMap.project(data, myLeafletMap.getZoom());
+        return new go.Point(pos.x, pos.y);
+      }).makeTwoWay((pt, data) => {
+        if (myUpdatingGoJS) {
+          return data.latlong; // no-op
+        } else {
+          const ll = myLeafletMap.unproject(L.point(pt.x, pt.y), myLeafletMap.getZoom());
+          return [ll.lat, ll.lng];
+        }
+      })
+    );
+
+  myDiagram.linkTemplate =
+    $(go.Link,
+      { layerName: "Background", curve: go.Link.Bezier, curviness: 5 },
+      $(go.Shape, { strokeWidth: 5, stroke: "#0c2461" })
+    );
+
+  // DraggingTool needs to disable panning of Leaflet map
+  myDiagram.toolManager.draggingTool.doActivate = function() {
+    myLeafletMap.dragging.disable();
+    go.DraggingTool.prototype.doActivate.call(this);
+  }
+
+  myDiagram.toolManager.draggingTool.doDeactivate = function() {
+    myLeafletMap.dragging.enable();
+    go.DraggingTool.prototype.doDeactivate.call(this);
+  }
+
+  // create the model data that will be represented by Nodes and Links
+  myDiagram.model = new go.GraphLinksModel(
+  [
+    { key: "user", latlong: [lat, long] },
+    { key: "Gare Nord", latlong: [5.358606, -4.027452] },
+    { key: "Gare Sud", latlong: [5.314437, -4.018290] },
+  ],
+  [
+    { from: "user", to: "Gare Nord" },
+    { from: "user", to: "Gare Sud" },
+  ]); 
+} // end init
+
+
+</script>
+<!--  This script is part of the gojs.net website, and is not needed to run the sample -->
+<script src="../assets/js/goSamples.js"></script>
+</html>
