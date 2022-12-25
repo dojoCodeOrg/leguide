@@ -1,0 +1,47 @@
+#get-stop {
+    display: none;
+}
+.menu-pose {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    /* position: fixed; */
+    z-index: 710;
+}
+.text-black-blue-500 {
+    color: #0c2461;
+    font-weight: 500;
+}
+.text-black-blue {
+    color: #0c2461;
+}
+.text-black-blue-600 {
+    color: #0c2461;
+    font-weight: 600;
+}
+.text-black {
+    color: #0c2461;
+}
+.bg-blue-black {
+    background-color: #0c2461;
+}
+.hover-clickable:hover {
+    cursor: pointer;
+}
+.text-white {
+    --tw-text-opacity: 1;
+    color: rgba(255, 255, 255, var(--tw-text-opacity))
+}
+.padding-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+.mapbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#map-stop {
+    display: none;
+}
